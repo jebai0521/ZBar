@@ -89,8 +89,8 @@
     captureReader.captureDelegate = (id<ZBarCaptureDelegate>)self;
     [session addOutput: captureReader.captureOutput];
 
-    if([session canSetSessionPreset: AVCaptureSessionPreset640x480])
-        session.sessionPreset = AVCaptureSessionPreset640x480;
+    if([session canSetSessionPreset: AVCaptureSessionPresetHigh])
+        session.sessionPreset = AVCaptureSessionPresetHigh;
 
     [captureReader addObserver: self
                    forKeyPath: @"size"
@@ -134,6 +134,12 @@
                        forKeyPath: @"size"];
     }
     @catch(...) { }
+    
+    
+    [session removeOutput:captureReader.captureOutput];
+    [session removeInput:input];
+    [preview removeFromSuperlayer];
+    
     captureReader.captureDelegate = nil;
     [captureReader release];
     captureReader = nil;
@@ -240,6 +246,10 @@
 
     captureReader.enableReader = NO;
     [session stopRunning];
+    
+    [session removeOutput:captureReader.captureOutput];
+    [session removeInput:input];
+    [preview removeFromSuperlayer];
 }
 
 - (void) flushCache

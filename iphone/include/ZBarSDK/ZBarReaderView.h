@@ -47,6 +47,12 @@
 // a complete video capture session feeding a ZBarCaptureReader and
 // presents the associated preview with symbol tracking annotations.
 
+@interface ZBarCropMaskLayer : CALayer
+
+@property (assign, nonatomic) CGRect hollowRect;
+
+@end
+
 @interface ZBarReaderView
     : UIView
 {
@@ -61,7 +67,8 @@
     UIInterfaceOrientation interfaceOrientation;
     NSTimeInterval animationDuration;
 
-    CALayer *preview, *overlay, *tracking, *cropLayer;
+    ZBarCropMaskLayer* overlay;
+    CALayer *preview, *tracking, *cropLayer;
     UIView *fpsView;
     UILabel *fpsLabel;
     UIPinchGestureRecognizer *pinch;

@@ -157,7 +157,8 @@ AVSessionPresetForUIVideoQuality (UIImagePickerControllerQualityType quality)
     supportedOrientationsMask =
         ZBarOrientationMask(UIInterfaceOrientationPortrait);
     showsZBarControls = tracksSymbols = enableCache = YES;
-    scanCrop = CGRectMake(0, 0, 1, 1);
+//    scanCrop = CGRectMake(0, 0, 1, 1);
+    scanCrop = CGRectMake(.2, .05, .48, .9);
     cameraViewTransform = CGAffineTransformIdentity;
 
     cameraFlashMode = UIImagePickerControllerCameraFlashModeAuto;
