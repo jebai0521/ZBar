@@ -379,7 +379,7 @@ const unsigned char lineImagebytes[] = {
 {
     assert(preview);
 
-    overlay = [ZBarCropMaskLayer new];
+    overlay = [CALayer new];
     overlay.backgroundColor = [UIColor clearColor].CGColor;
     [preview addSublayer: overlay];
 
@@ -657,15 +657,15 @@ static inline CGFloat rotationForInterfaceOrientation (int orient)
     preview.backgroundColor = [UIColor blackColor].CGColor;
 //    overlay.borderWidth = 2 * imageScale;
 //    cropLayer.borderWidth = 2 * imageScale;
-    overlay.borderWidth = .5;
-    cropLayer.borderWidth = .5;
+//    overlay.borderWidth = .5;
+//    cropLayer.borderWidth = .5;
     cropLayer.frame = CGRectMake(effectiveCrop.origin.x * imageSize.width,
                                  effectiveCrop.origin.y * imageSize.height,
                                  effectiveCrop.size.width * imageSize.width,
                                  effectiveCrop.size.height * imageSize.height);
     
-    [overlay setHollowRect:cropLayer.frame];
-    [overlay setNeedsDisplay];
+//    [overlay setHollowRect:cropLayer.frame];
+//    [overlay setNeedsDisplay];
     zlog(@"layoutSubviews: bounds=%@ orient=%d image=%@ crop=%@ zoom=%g\n"
          @"=> preview=%@ crop=(z%@ p%@ %@ i%@) scale=%g %c %g = 1/%g",
          NSStringFromCGSize(bounds.size), interfaceOrientation,

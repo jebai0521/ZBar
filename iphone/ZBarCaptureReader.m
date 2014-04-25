@@ -296,8 +296,12 @@ enum {
         goto error;
     }
 
+    // 数据分析
     void *data = CVPixelBufferGetBaseAddressOfPlane(buf, 0);
     if(data) {
+        
+        // 先做一次pdf417的扫描
+        
         [image setData: data
                withLength: w * h];
 
@@ -321,6 +325,7 @@ enum {
                 [self cropUpdate];
             }
 
+            // 执行扫描
             ngood = [scanner scanImage: image];
             syms = scanner.results;
             doTrack = [captureDelegate respondsToSelector:
@@ -356,6 +361,7 @@ enum {
                       withObject: syms
                       waitUntilDone: NO];
         }
+        // 请空数据
         [image setData: NULL
                withLength: 0];
     }

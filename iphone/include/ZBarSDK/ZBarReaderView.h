@@ -67,7 +67,7 @@
     UIInterfaceOrientation interfaceOrientation;
     NSTimeInterval animationDuration;
 
-    ZBarCropMaskLayer* overlay;
+    CALayer* overlay;
     CALayer *preview, *tracking, *cropLayer;
     UIView *fpsView;
     UILabel *fpsLabel;
