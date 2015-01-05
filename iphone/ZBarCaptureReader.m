@@ -41,7 +41,7 @@ enum {
 
 @implementation ZBarCaptureReader
 
-@synthesize captureOutput, captureDelegate, scanner, scanCrop, size,
+@synthesize captureMetadataOutput, captureOutput, captureDelegate, scanner, scanCrop, size,
     framesPerSecond, enableCache;
 @dynamic enableReader;
 
@@ -70,6 +70,9 @@ enum {
     captureOutput = [AVCaptureVideoDataOutput new];
     captureOutput.alwaysDiscardsLateVideoFrames = YES;
 
+    captureMetadataOutput = [[AVCaptureMetadataOutput alloc] init];
+    [captureMetadataOutput setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()];
+    
 #ifdef FIXED_8697526
     /* iOS 4.2 introduced a bug that causes [session startRunning] to
      * hang if the session has a preview layer and this property is
@@ -211,6 +214,16 @@ enum {
     [captureDelegate
         captureReader: self
         didReadNewSymbolsFromImage: img];
+    OSAtomicAnd32Barrier(~PAUSED, &state);
+    zlog(@"latency: delegate=%gs total=%gs",
+         timer_elapsed(t_start, timer_now()),
+         timer_elapsed(t_scan, timer_now()));
+}
+
+- (void) didReadNewSymbolsFromSystem: (NSMutableDictionary *)codeInfoDict{
+    timer_start;
+    [captureDelegate
+     captureReader:[codeInfoDict objectForKey:@"type"] codeValue:[codeInfoDict objectForKey:@"value"]];
     OSAtomicAnd32Barrier(~PAUSED, &state);
     zlog(@"latency: delegate=%gs total=%gs",
          timer_elapsed(t_start, timer_now()),
@@ -365,6 +378,34 @@ enum {
 
  error:
     [pool release];
+}
+
+- (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection
+{
+    NSMutableDictionary *codeInfoDict = [NSMutableDictionary dictionary];
+    uint32_t _state = OSAtomicOr32Barrier(0, &state);
+    
+    for (AVMetadataObject *metadata in metadataObjects) {
+        
+        if (![metadata isKindOfClass:[AVMetadataMachineReadableCodeObject class]]) {
+            continue;
+        }
+        
+        NSString* type = metadata.type;
+        NSString* value = [(AVMetadataMachineReadableCodeObject *)metadata stringValue];
+        
+        [codeInfoDict setObject:type forKey:@"type"];
+        [codeInfoDict setObject:value forKey:@"value"];
+        
+        OSAtomicXor32Barrier((_state & CAPTURE) | PAUSED, &state);
+        [self performSelectorOnMainThread:
+         @selector(didReadNewSymbolsFromSystem:)
+                               withObject:codeInfoDict
+                            waitUntilDone: NO];
+        
+        NSLog(@"type ==> %@ value ==> %@", type, value);
+    }
+    
 }
 
 @end

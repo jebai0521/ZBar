@@ -34,6 +34,9 @@
 - (void)       captureReader: (ZBarCaptureReader*) captureReader
   didReadNewSymbolsFromImage: (ZBarImage*) image;
 
+//called when PDF417 or Aztec is detected
+- (void)       captureReader:(NSString *)codeType codeValue:(NSString *)codeValue;
+
 @optional
 // called when a potential/uncertain barcode is detected.  will also
 // be called *after* captureReader:didReadNewSymbolsFromImage:
@@ -44,7 +47,7 @@
 @end
 
 @interface ZBarCaptureReader
-    : NSObject
+    : NSObject<AVCaptureMetadataOutputObjectsDelegate>
 {
 #if !TARGET_IPHONE_SIMULATOR
     AVCaptureVideoDataOutput *captureOutput;
@@ -84,6 +87,9 @@
 
 // the capture output.  add this to an instance of AVCaptureSession
 @property (nonatomic, readonly) AVCaptureOutput *captureOutput;
+
+//add the output of PDF417&Aztec
+@property (strong, nonatomic) AVCaptureMetadataOutput *captureMetadataOutput;
 
 // delegate is notified of decode results and symbol tracking.
 @property (nonatomic, assign) id<ZBarCaptureDelegate> captureDelegate;

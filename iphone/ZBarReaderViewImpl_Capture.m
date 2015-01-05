@@ -88,7 +88,11 @@
                         initWithImageScanner: scanner];
     captureReader.captureDelegate = (id<ZBarCaptureDelegate>)self;
     [session addOutput: captureReader.captureOutput];
+    [session addOutput: captureReader.captureMetadataOutput];
+//    captureReader.captureMetadataOutput.metadataObjectTypes = [captureReader.captureMetadataOutput availableMetadataObjectTypes];
 
+    captureReader.captureMetadataOutput.metadataObjectTypes = @[AVMetadataObjectTypePDF417Code, AVMetadataObjectTypeAztecCode];
+    
     if([session canSetSessionPreset: AVCaptureSessionPreset640x480])
         session.sessionPreset = AVCaptureSessionPreset640x480;
 
@@ -397,6 +401,10 @@
         readerView: self
         didReadSymbols: zimg.symbols
         fromImage: uiimg];
+}
+
+- (void)       captureReader:(NSString *)codeType codeValue:(NSString *)codeValue{
+    NSLog(@"%@, %@",codeType, codeValue);
 }
 
 @end
