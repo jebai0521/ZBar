@@ -40,7 +40,6 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		7D6B91791906510900451C11 /* pdf417.c in Sources */ = {isa = PBXBuildFile; fileRef = 7D6B91771906510900451C11 /* pdf417.c */; };
 		DC26004C118631C200FA987B /* ZBarCaptureReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DC26004B118631C200FA987B /* ZBarCaptureReader.m */; };
 		DC290E281351496400A9B857 /* codabar.c in Sources */ = {isa = PBXBuildFile; fileRef = DC290E261351496400A9B857 /* codabar.c */; };
 		DC299A9D1208B5E8006A023C /* libzbar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC07E0554694100DB518D /* libzbar.a */; };
@@ -235,9 +234,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		7D6B91761906510900451C11 /* pdf417_hash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pdf417_hash.h; sourceTree = "<group>"; };
-		7D6B91771906510900451C11 /* pdf417.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pdf417.c; sourceTree = "<group>"; };
-		7D6B91781906510900451C11 /* pdf417.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pdf417.h; sourceTree = "<group>"; };
 		AACBBE490F95108600F1A2B1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D2AAC07E0554694100DB518D /* libzbar.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libzbar.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC1A49A211FF33B300BCDA30 /* zbar-help.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "zbar-help.html"; path = "res/zbar-help.html"; sourceTree = "<group>"; };
@@ -541,9 +537,6 @@
 		DC67C12210A07AD30033B702 /* decoder */ = {
 			isa = PBXGroup;
 			children = (
-				7D6B91761906510900451C11 /* pdf417_hash.h */,
-				7D6B91771906510900451C11 /* pdf417.c */,
-				7D6B91781906510900451C11 /* pdf417.h */,
 				DCF5C9AB11EA3AD100E7DC21 /* databar.c */,
 				DCF5C9AC11EA3AD100E7DC21 /* databar.h */,
 				DC67C12310A07AD30033B702 /* code128.c */,
@@ -752,7 +745,6 @@
 				DCE9900D129719F100D2655C /* code93.c in Sources */,
 				DC5D76C3136FA8C40069AEF5 /* ZBarCameraSimulator.m in Sources */,
 				DC290E281351496400A9B857 /* codabar.c in Sources */,
-				7D6B91791906510900451C11 /* pdf417.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -789,6 +781,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				"ARCHS[sdk=*]" = (
+					"$(ARCHS_STANDARD)",
+					armv7s,
+				);
+				"ARCHS[sdk=iphonesimulator*]" = (
+					x86_64,
+					i386,
+				);
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
@@ -811,6 +811,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				"ARCHS[sdk=*]" = "$(ARCHS_STANDARD)";
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = include/prefix.pch;
@@ -972,6 +973,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				"ARCHS[sdk=*]" = "$(ARCHS_STANDARD)";
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = include/prefix.pch;
